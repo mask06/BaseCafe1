@@ -1,0 +1,86 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<h2>Ürünler</h2>
+
+<div class="text-right mb-4">
+    <button type="button" class="btn btn-secondary position-relative" onclick="location.href='@Url.Action("Cart", "Cart")'">
+        <i class="fas fa-shopping-cart"></i> Sepet
+        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            0
+        </span>
+    </button>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@product.categoryName</h6>
+                        <p class="card-text">@product.Description</p>
+                        <p class="card-text"><strong>Fiyat: </strong>₺@product.Price</p>
+                        <button type="button" class="btn btn-primary add-to-cart-btn" data-id="@product.Id" data-name="@product.Name" data-price="@product.Price">
+                            Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Index.cshtml dosyasının sonuna ekleyin -->
+<script>
+    // Tarayıcı çerezlerine ürün ekleyecek veya var olan ürünü güncelleyecek
+    function addToCart(productId, productName, productPrice) {
+        // Sepeti JSON formatında yerel depolamadan veya yeni bir liste olarak al
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Ürün sepette varsa miktarını arttır
+        let existingProduct = cart.find(item => item.id === productId);
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            // Ürün yoksa yeni ürün olarak sepete ekle
+            cart.push({
+                id: productId,
+                name: productName,
+                price: productPrice,
+                quantity: 1
+            });
+        }
+
+        // Güncellenmiş sepeti yerel depolamaya kaydet
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Sepet sayacını güncelle
+        updateCartCount();
+
+    }
+
+    // Sepet sayacını günceller
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    // Butona tıklandığında addToCart fonksiyonunu çağır
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id');
+            const productName = button.getAttribute('data-name');
+            const productPrice = parseFloat(button.getAttribute('data-price'));
+            addToCart(productId, productName, productPrice);
+        });
+    });
+
+    // Sayfa yüklendiğinde sepet sayısını güncelle
+    updateCartCount();
+</script>

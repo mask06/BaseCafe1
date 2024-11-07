@@ -1,0 +1,34 @@
+﻿@using BaseCafe.BLL.DTOs
+@model ProductDTO
+
+ 
+<form asp-action="Edit" method="post">
+<div class="form-group">
+<label asp-for="Name"></label>
+<input asp-for="Name" class="form-control"></input>
+<span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+<label asp-for="Description"></label>
+<input asp-for="Description" class="form-control"></input>
+<span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="form-group">
+<label asp-for="Price"></label>
+<input asp-for="Price" class="form-control" type="number"></input>
+<span asp-validation-for="Price" class="text-danger"></span>
+</div>
+<div class="form-group">
+<label asp-for="StockQuantity"></label>
+<input asp-for="StockQuantity" class="form-control" type="number"></input>
+<span asp-validation-for="StockQuantity" class="text-danger"></span>
+</div>
+<div class="form-group">
+<label asp-for="CategoryID"></label>
+<select asp-for="CategoryID" asp-items="@(new SelectList(ViewBag.Categories, "Id","Name"))" class="form-control"></select>
+<span asp-validation-for="CategoryID" class="text-danger"></span>
+</div>
+ 
+    <button type="submit" class="btn btn-primary">Update</button>
+<a asp-action="Index" class="btn btn-primary">İptal</a>
+</form>
