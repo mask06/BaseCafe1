@@ -29,7 +29,7 @@ namespace BaseCafe.UI.Controllers
         public async Task<IActionResult> Index()
         {
             var prodcuts = _productManager.GetAll();
-            await _mailService.SendMailAsync("mustafaygar3903@gmail.com","deneme","deneme e postası",true);
+            //await _mailService.SendMailAsync("mustafaygar3903@gmail.com","deneme","deneme e postası",true);
             var productDtos = prodcuts.Select(
                 p => new
                 {

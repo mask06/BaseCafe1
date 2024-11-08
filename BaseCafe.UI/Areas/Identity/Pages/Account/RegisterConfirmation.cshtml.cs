@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using BaseCafe.DAL.Mail;
 
 namespace BaseCafe.UI.Areas.Identity.Pages.Account
 {
@@ -20,30 +21,41 @@ namespace BaseCafe.UI.Areas.Identity.Pages.Account
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _sender;
+        private readonly IMailService _mailService;
 
-        public RegisterConfirmationModel(UserManager<AppUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<AppUser> userManager, IEmailSender sender, IMailService mailService)
         {
             _userManager = userManager;
             _sender = sender;
+            _mailService = mailService;
         }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Email { get; set; }
+        public string Email
+        {
+            get; set;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public bool DisplayConfirmAccountLink { get; set; }
+        public bool DisplayConfirmAccountLink
+        {
+            get; set;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string EmailConfirmationUrl { get; set; }
+        public string EmailConfirmationUrl
+        {
+            get; set;
+        }
 
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
@@ -67,10 +79,17 @@ namespace BaseCafe.UI.Areas.Identity.Pages.Account
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                await _mailService.SendConfimationAsync(user,code);
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    values: new
+                    {
+                        area = "Identity",
+                        userId = userId,
+                        code = code,
+                        returnUrl = returnUrl
+                    },
                     protocol: Request.Scheme);
             }
 
