@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseCafe.BLL.DTOs
 {
-    public record OrderDTO(int Id,DateTime OrderDate,decimal TotalAmount ,string Status);
+    public record OrderDTO(int Id,DateTime OrderDate,decimal TotalAmount ,string Status ,string AppUserID);
     
     
 }

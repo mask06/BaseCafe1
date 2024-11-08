@@ -12,6 +12,11 @@ namespace BaseCafe.DAL.Entities.Concrete
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal TotalAmount { get; set; }
         public string Status { get; set; }
+        public string? AppUserID { get; set; }
+        public string? AppUser {
+            get;
+            set;
+        }
 
         public ICollection<OrderDetail> OrderDetails { get;set; }
     }

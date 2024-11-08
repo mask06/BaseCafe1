@@ -1,10 +1,14 @@
 ﻿using BaseCafe.BLL.DTOs;
 using BaseCafe.BLL.Managers.Abstract;
 using BaseCafe.DAL.Entities.Concrete;
+using BaseCafe.DAL.Mail;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BaseCafe.UI.Controllers
 {
+    //[Authorize("Customer")]
     public class CartController : Controller
     {
         //Card alınarak ürnün bilgileir kategoris olucak sonrasında eltında SepeteEkle buttonu olucak bunu indexe yapacağız menu tasarlayalım 
@@ -12,16 +16,20 @@ namespace BaseCafe.UI.Controllers
         private readonly IGenericManager<CategoryDTO, Category> _categoryManager;
         private readonly IGenericManager<OrderDTO, Order> _orderManager;
         private readonly IGenericManager<OrderDetailDTO, OrderDetail> _orderDetailManager;
-        public CartController(IGenericManager<ProductDTO, Product> productManager, IGenericManager<CategoryDTO, Category> categoryManager, IGenericManager<OrderDTO, Order> orderManager, IGenericManager<OrderDetailDTO, OrderDetail> orderDetailManager)
+        private readonly IMailService _mailService;
+        public CartController(IGenericManager<ProductDTO, Product> productManager, IGenericManager<CategoryDTO,
+            Category> categoryManager, IGenericManager<OrderDTO, Order> orderManager, IGenericManager<OrderDetailDTO, OrderDetail> orderDetailManager,IMailService mailService)
         {
             _categoryManager= categoryManager;
             _productManager= productManager;
             _orderManager = orderManager;
             _orderDetailManager=orderDetailManager;
+            _mailService =  mailService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var prodcuts = _productManager.GetAll();
+            await _mailService.SendMailAsync("mustafaygar3903@gmail.com","deneme","deneme e postası",true);
             var productDtos = prodcuts.Select(
                 p => new
                 {
@@ -47,12 +55,12 @@ namespace BaseCafe.UI.Controllers
             {
                 return BadRequest("Cart is null");
             }
-
+            var userID = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             //sepetteki toplam tutar
             var totalAmount = cart.Sum(item => item.Quantity*_productManager.Find(item.ProductID).Price);
 
             //yeni sipariş oluştur
-            var newOrder = new OrderDTO(0, DateTime.Now, totalAmount, "Created");
+            var newOrder = new OrderDTO(0, DateTime.Now, totalAmount, "Created",userID);
 
             //sipariş ekle
 

@@ -1,4 +1,5 @@
 ﻿using BaseCafe.DAL.Context;
+using BaseCafe.DAL.Mail;
 using BaseCafe.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace BaseCafe.DAL
         public static void AddDalService(this IServiceCollection services)
         {
             services.AddDbContext<MyDbContext>(opt => opt.UseSqlServer(Configuration.ConnectionString));
+            services.AddTransient<IMailService, MailService>();
          
             
         }

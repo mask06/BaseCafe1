@@ -4,6 +4,7 @@ using BaseCafe.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseCafe.DAL.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107135135_mig")]
+    partial class mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,23 +88,6 @@ namespace BaseCafe.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "252d1809-cd07-4ebd-87d1-83cefac3b78c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "55c5fc1a-1d71-4de4-b65e-e14eed798ade",
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM+Z5izFnWrz53m8t9fS1e6BMVnlAENTCweQRMyci5Nd1mvUHeyuAA6nwNrQqKfXag==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "87b82a5e-69c1-4831-87d0-678b208084ae",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@gmail.com"
-                        });
                 });
 
             modelBuilder.Entity("BaseCafe.DAL.Entities.Concrete.Cart", b =>
@@ -262,12 +248,6 @@ namespace BaseCafe.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUser")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppUserID")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -298,7 +278,7 @@ namespace BaseCafe.DAL.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            OrderDate = new DateTime(2024, 11, 5, 17, 27, 14, 987, DateTimeKind.Local).AddTicks(5586),
+                            OrderDate = new DateTime(2024, 11, 5, 16, 51, 35, 62, DateTimeKind.Local).AddTicks(3850),
                             Status = "Completed",
                             TotalAmount = 9.50m
                         },
@@ -308,7 +288,7 @@ namespace BaseCafe.DAL.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            OrderDate = new DateTime(2024, 11, 6, 17, 27, 14, 987, DateTimeKind.Local).AddTicks(5593),
+                            OrderDate = new DateTime(2024, 11, 6, 16, 51, 35, 62, DateTimeKind.Local).AddTicks(3856),
                             Status = "Pending",
                             TotalAmount = 6.50m
                         },
@@ -318,7 +298,7 @@ namespace BaseCafe.DAL.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            OrderDate = new DateTime(2024, 11, 7, 17, 27, 14, 987, DateTimeKind.Local).AddTicks(5594),
+                            OrderDate = new DateTime(2024, 11, 7, 16, 51, 35, 62, DateTimeKind.Local).AddTicks(3857),
                             Status = "Processing",
                             TotalAmount = 15.00m
                         });
@@ -576,7 +556,7 @@ namespace BaseCafe.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -601,20 +581,6 @@ namespace BaseCafe.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c9bbce7e-7372-47f2-80e9-029ce117f245",
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
-                        },
-                        new
-                        {
-                            Id = "329d3be5-8001-4997-85a9-ebc16be771c2",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -704,13 +670,6 @@ namespace BaseCafe.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "252d1809-cd07-4ebd-87d1-83cefac3b78c",
-                            RoleId = "329d3be5-8001-4997-85a9-ebc16be771c2"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -777,7 +736,7 @@ namespace BaseCafe.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -804,7 +763,7 @@ namespace BaseCafe.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
